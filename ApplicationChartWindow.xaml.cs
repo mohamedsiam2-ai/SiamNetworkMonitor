@@ -1,12 +1,147 @@
-using System.Windows;using System.Windows.Media;using System.Windows.Shapes;using System.Windows.Threading;using SiamNetworkMonitor.Services;using SiamNetworkMonitor.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using SiamNetworkMonitor.Services;
+using SiamNetworkMonitor.ViewModels;
+
 namespace SiamNetworkMonitor;
-public partial class ApplicationChartWindow:Window
+
+public partial class ApplicationChartWindow : Window
 {
- const int Capacity=120;readonly ProcessRowViewModel _row;readonly Queue<(double Down,double Up)> _samples=new();readonly DispatcherTimer _timer=new(){Interval=TimeSpan.FromSeconds(1)};
- public ApplicationChartWindow(ProcessRowViewModel row){InitializeComponent();_row=row;AppNameText.Text=row.Description;ProcessText.Text=$"{row.ProcessName} • PID {row.ProcessId} • {row.Publisher}";_timer.Tick+=OnTick;Loaded+=(_,_)=>{AddSample();_timer.Start();};Closed+=(_,_)=>_timer.Stop();}
- void OnTick(object? s,EventArgs e)=>AddSample();void AddSample(){_samples.Enqueue((_row.DownloadKBps,_row.UploadKBps));while(_samples.Count>Capacity)_samples.Dequeue();DownloadText.Text=DisplayFormatter.Rate(_row.DownloadKBps);UploadText.Text=DisplayFormatter.Rate(_row.UploadKBps);Draw();}
- void Draw(){if(ChartCanvas.ActualWidth<20||ChartCanvas.ActualHeight<20)return;ChartCanvas.Children.Clear();var width=ChartCanvas.ActualWidth,height=ChartCanvas.ActualHeight;var max=Math.Max(1,_samples.SelectMany(x=>new[]{x.Down,x.Up}).DefaultIfEmpty(0).Max());max=NiceMaximum(max);for(int i=0;i<=4;i++){var y=height*i/4;var line=new Line{X1=0,X2=width,Y1=y,Y2=y,Stroke=new SolidColorBrush(Color.FromArgb(70,80,110,140)),StrokeThickness=1};ChartCanvas.Children.Add(line);var label=new TextBlock{Text=DisplayFormatter.Rate(max*(4-i)/4),Foreground=new SolidColorBrush(Color.FromRgb(154,174,200)),FontSize=10};Canvas.SetLeft(label,5);Canvas.SetTop(label,Math.Max(0,y-15));ChartCanvas.Children.Add(label);}DrawSeries(_samples.Select(x=>x.Down),max,width,height,(Brush)FindResource("DownloadBrush"));DrawSeries(_samples.Select(x=>x.Up),max,width,height,(Brush)FindResource("UploadBrush"));ScaleText.Text=$"Peak scale: {DisplayFormatter.Rate(max)} • Samples: {_samples.Count}/{Capacity}";}
- void DrawSeries(IEnumerable<double> values,double max,double width,double height,Brush brush){var a=values.ToArray();if(a.Length<2)return;var p=new Polyline{Stroke=brush,StrokeThickness=2.5,StrokeLineJoin=PenLineJoin.Round};for(int i=0;i<a.Length;i++)p.Points.Add(new Point(i*width/(Capacity-1),height-(Math.Max(0,a[i])/max*height)));ChartCanvas.Children.Add(p);}
- static double NiceMaximum(double v){var power=Math.Pow(10,Math.Floor(Math.Log10(v)));var n=v/power;var nice=n<=1?1:n<=2?2:n<=5?5:10;return nice*power;}
- void Clear_Click(object s,RoutedEventArgs e){_samples.Clear();AddSample();}void ChartCanvas_SizeChanged(object s,SizeChangedEventArgs e)=>Draw();
+    private const int Capacity = 120;
+    private readonly ProcessRowViewModel _row;
+    private readonly Queue<(double Down, double Up)> _samples = new();
+    private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(1) };
+
+    public ApplicationChartWindow(ProcessRowViewModel row)
+    {
+        InitializeComponent();
+        _row = row;
+        AppNameText.Text = row.Description;
+        ProcessText.Text = $"{row.ProcessName} • PID {row.ProcessId} • {row.Publisher}";
+        _timer.Tick += OnTick;
+        Loaded += (_, _) =>
+        {
+            AddSample();
+            _timer.Start();
+        };
+        Closed += (_, _) => _timer.Stop();
+    }
+
+    private void OnTick(object? sender, EventArgs e) => AddSample();
+
+    private void AddSample()
+    {
+        _samples.Enqueue((_row.DownloadKBps, _row.UploadKBps));
+        while (_samples.Count > Capacity)
+            _samples.Dequeue();
+
+        DownloadText.Text = DisplayFormatter.Rate(_row.DownloadKBps);
+        UploadText.Text = DisplayFormatter.Rate(_row.UploadKBps);
+        Draw();
+    }
+
+    private void Draw()
+    {
+        if (ChartCanvas.ActualWidth < 20 || ChartCanvas.ActualHeight < 20)
+            return;
+
+        ChartCanvas.Children.Clear();
+        double width = ChartCanvas.ActualWidth;
+        double height = ChartCanvas.ActualHeight;
+        double maximum = Math.Max(
+            1,
+            _samples.SelectMany(sample => new[] { sample.Down, sample.Up })
+                .DefaultIfEmpty(0)
+                .Max());
+
+        maximum = NiceMaximum(maximum);
+
+        for (int index = 0; index <= 4; index++)
+        {
+            double y = height * index / 4;
+            var line = new Line
+            {
+                X1 = 0,
+                X2 = width,
+                Y1 = y,
+                Y2 = y,
+                Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 80, 110, 140)),
+                StrokeThickness = 1
+            };
+            ChartCanvas.Children.Add(line);
+
+            var label = new TextBlock
+            {
+                Text = DisplayFormatter.Rate(maximum * (4 - index) / 4),
+                Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(154, 174, 200)),
+                FontSize = 10
+            };
+            Canvas.SetLeft(label, 5);
+            Canvas.SetTop(label, Math.Max(0, y - 15));
+            ChartCanvas.Children.Add(label);
+        }
+
+        DrawSeries(
+            _samples.Select(sample => sample.Down),
+            maximum,
+            width,
+            height,
+            (System.Windows.Media.Brush)FindResource("DownloadBrush"));
+
+        DrawSeries(
+            _samples.Select(sample => sample.Up),
+            maximum,
+            width,
+            height,
+            (System.Windows.Media.Brush)FindResource("UploadBrush"));
+
+        ScaleText.Text = $"Peak scale: {DisplayFormatter.Rate(maximum)} • Samples: {_samples.Count}/{Capacity}";
+    }
+
+    private void DrawSeries(
+        IEnumerable<double> values,
+        double maximum,
+        double width,
+        double height,
+        System.Windows.Media.Brush brush)
+    {
+        double[] samples = values.ToArray();
+        if (samples.Length < 2)
+            return;
+
+        var polyline = new Polyline
+        {
+            Stroke = brush,
+            StrokeThickness = 2.5,
+            StrokeLineJoin = PenLineJoin.Round
+        };
+
+        for (int index = 0; index < samples.Length; index++)
+        {
+            polyline.Points.Add(new System.Windows.Point(
+                index * width / (Capacity - 1),
+                height - Math.Max(0, samples[index]) / maximum * height));
+        }
+
+        ChartCanvas.Children.Add(polyline);
+    }
+
+    private static double NiceMaximum(double value)
+    {
+        double power = Math.Pow(10, Math.Floor(Math.Log10(value)));
+        double normalized = value / power;
+        double nice = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+        return nice * power;
+    }
+
+    private void Clear_Click(object sender, RoutedEventArgs e)
+    {
+        _samples.Clear();
+        AddSample();
+    }
+
+    private void ChartCanvas_SizeChanged(object sender, SizeChangedEventArgs e) => Draw();
 }
