@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible problem
+title: "[Bug] "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: v17
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior

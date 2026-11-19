@@ -1,0 +1,36 @@
+# .NET build output
+bin/
+obj/
+artifacts/
+TestResults/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Runtime data and logs
+Logs/
+*.log
+app-error.txt
+build-result.txt
+meter-settings.json
+usage-history.json
+alert-history.json
+alert-rules.json
+app-settings.json
+
+# Release output
+publish/
+releases/
+*.zip
+*.nupkg
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store

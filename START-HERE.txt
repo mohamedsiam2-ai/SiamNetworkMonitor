@@ -1,0 +1,5 @@
+1. Extract the entire ZIP first. Do not run files from inside the ZIP preview.
+2. Double-click BUILD-AND-RUN.cmd.
+3. Accept the Windows UAC prompt.
+4. The black window now remains open until you press a key.
+5. If the app closes, send app-error.txt from bin\Release\net8.0-windows.

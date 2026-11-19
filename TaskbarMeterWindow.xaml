@@ -1,0 +1,10 @@
+<Window x:Class="SiamNetworkMonitor.TaskbarMeterWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="258" Height="54" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" AllowsTransparency="True" Background="Transparent" Focusable="False" ShowActivated="False">
+ <Border x:Name="Shell" Background="#F20D1828" BorderBrush="#425978" BorderThickness="1" CornerRadius="12" Padding="13,7" Cursor="SizeAll" ToolTip="Drag to move • Click to open • Right-click for settings">
+  <Grid>
+   <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="1"/><ColumnDefinition/></Grid.ColumnDefinitions>
+   <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock x:Name="DownArrow" Text="↓" Foreground="#4A9EFF" FontSize="22" FontWeight="Bold" Margin="0,0,7,0"/><StackPanel><TextBlock x:Name="DownLabel" Text="DOWN" Foreground="#91A4BD" FontSize="9" FontWeight="Bold"/><TextBlock x:Name="DownText" Text="0 KB/s" Foreground="#F7FAFF" FontSize="16" FontWeight="SemiBold"/></StackPanel></StackPanel>
+   <Border Grid.Column="1" Background="#425978" Margin="0,3"/>
+   <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock x:Name="UpArrow" Text="↑" Foreground="#35D6A0" FontSize="22" FontWeight="Bold" Margin="0,0,7,0"/><StackPanel><TextBlock x:Name="UpLabel" Text="UP" Foreground="#91A4BD" FontSize="9" FontWeight="Bold"/><TextBlock x:Name="UpText" Text="0 KB/s" Foreground="#F7FAFF" FontSize="16" FontWeight="SemiBold"/></StackPanel></StackPanel>
+  </Grid>
+ </Border>
+</Window>
