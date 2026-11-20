@@ -1,0 +1,7 @@
+V17.2 Full-screen meter behavior
+- New setting: Hide the taskbar meter while any app is full screen (enabled by default).
+- Detects the active monitor and compares the foreground window bounds with that monitor's full bounds.
+- Works with browser full-screen video (YouTube, Netflix, etc.), VLC, MPC-HC, and other true full-screen apps.
+- Ignores Windows taskbar, desktop, WorkerW, minimized windows, and Siam's own meter.
+- Checks every 500 ms, hides without stopping monitoring, and restores/re-attaches after full-screen exits.
+- Multi-monitor aware: checks the monitor that contains the current foreground window.

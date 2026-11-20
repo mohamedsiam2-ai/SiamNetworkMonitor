@@ -1,0 +1,6 @@
+V17.5 Alerts disabled by default
+- Every built-in default alert rule is created with Enabled=false.
+- Windows alert notifications default to disabled on new installations.
+- Existing users keep the choices already saved in alert-rules.json and app-settings.json.
+- Users can enable selected rules from Dashboard > Alerts > Edit rules.
+- Alert evaluation, history, rule editor, and notifications remain available when enabled.

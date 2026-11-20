@@ -1,0 +1,5 @@
+V17.3 Show Desktop exception
+- Win+D / Show Desktop no longer hides the taskbar meter.
+- Excludes GetShellWindow and Windows 10/11 desktop host classes from fullscreen detection.
+- Excludes desktop-sized explorer.exe shell windows while retaining true fullscreen detection for browsers, video players, and games.
+- Fullscreen hide setting and 500 ms restore behavior are preserved.

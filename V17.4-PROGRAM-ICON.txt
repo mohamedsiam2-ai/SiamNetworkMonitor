@@ -1,0 +1,6 @@
+V17.4 Program Icon
+- Added a production multi-resolution Windows ICO with 16, 20, 24, 32, 40, 48, 64, 128 and 256 px sizes.
+- Embedded as ApplicationIcon in SiamNetworkMonitor.csproj.
+- Applied to dashboard, settings, alert rule editor and application chart windows.
+- Included PNG source in Assets for GitHub README and release artwork.
+- Program version set to 17.4.0.

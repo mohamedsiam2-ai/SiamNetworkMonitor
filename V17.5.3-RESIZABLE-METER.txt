@@ -1,0 +1,10 @@
+V17.5.3 Resizable taskbar meter
+- Drag within 10 px of the left or right meter edge to resize horizontally.
+- Horizontal resize cursor appears at either edge.
+- Width range: 190 to 600 px.
+- Dragging the left edge preserves the right edge; dragging the right edge preserves the left edge.
+- Center drag continues to move the meter.
+- Lock position disables movement and resizing.
+- Saved width persists in meter-settings.json with backward-compatible default 258 px.
+- Reset position and width restores 258 px and the default taskbar position.
+- Existing fullscreen, Win+D and temporary alert-icon fixes are preserved.

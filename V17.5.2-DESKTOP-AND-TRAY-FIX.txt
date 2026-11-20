@@ -1,0 +1,6 @@
+V17.5.2
+- Win+D / Show Desktop now actively restores the meter as a non-activating topmost taskbar-owned tool window every 500 ms when no true fullscreen app is active.
+- The meter remains hidden only while a real fullscreen application is detected.
+- The alert NotifyIcon is no longer permanently visible.
+- The alert icon appears only while showing an enabled alert notification, then hides after 10 seconds.
+- With alerts/notifications disabled by default, no alert icon is created in the visible system tray.

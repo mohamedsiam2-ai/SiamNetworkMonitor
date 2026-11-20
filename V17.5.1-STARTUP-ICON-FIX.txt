@@ -1,0 +1,4 @@
+V17.5.1 startup icon fix
+- Removed direct Window.Icon XAML references to the ICO file, which caused TypeConverterMarkupExtension startup failure.
+- Kept ApplicationIcon in the project, so the EXE, Task Manager, taskbar, title bar, and default application windows continue using the program icon.
+- Preserved v17.5 alerts-disabled defaults and all v17.3 fullscreen/Show Desktop behavior.

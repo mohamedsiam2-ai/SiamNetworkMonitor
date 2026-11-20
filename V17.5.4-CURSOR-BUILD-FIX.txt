@@ -1,0 +1,4 @@
+V17.5.4 cursor build fix
+- Explicitly uses System.Windows.Input.Cursors.SizeWE and SizeAll.
+- Resolves ambiguity with System.Windows.Forms.Cursors.
+- Preserves all v17.5.3 resizable-meter behavior.

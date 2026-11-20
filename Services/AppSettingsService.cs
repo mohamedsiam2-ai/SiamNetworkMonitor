@@ -1,6 +1,6 @@
 using System.IO;using System.Text.Json;using Microsoft.Win32;
 namespace SiamNetworkMonitor.Services;
-public sealed class AppSettings{public bool StartWithWindows{get;set;}public bool StartMinimized{get;set;}=true;public bool NotificationsEnabled{get;set;}=true;}
+public sealed class AppSettings{public bool StartWithWindows{get;set;}public bool StartMinimized{get;set;}=true;public bool NotificationsEnabled{get;set;}=false;public bool HideMeterInFullscreen{get;set;}=true;}
 public sealed class AppSettingsService
 {
  readonly string _path;const string RunKey=@"Software\Microsoft\Windows\CurrentVersion\Run";const string ValueName="SiamNetworkMonitor";
