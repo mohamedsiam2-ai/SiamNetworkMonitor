@@ -1,0 +1,4 @@
+V18.0.0-beta2.1 build fix
+- Explicitly uses System.Windows.Controls.UserControl for HistoricalChartControl.
+- Resolves ambiguity with System.Windows.Forms.UserControl.
+- Preserves historical charts, top applications, beta1 tools, and stable meter behavior.

@@ -1,0 +1,9 @@
+V18.0.0-beta4
+- Connection auto-refresh: Off, 2, 5 or 10 seconds; Off by default.
+- Cancellable background connection scans; a new scan cancels the previous request.
+- Refresh duration displayed and selected remote endpoint restored when possible.
+- Data-limit notifications at 50/75/90/100%, disabled by default and one notification per threshold per cycle.
+- Notification state resets automatically when billing cycle changes.
+- Forecast status: On track, Near limit, or Projected over limit.
+- Test notification button.
+- Alert tray icon remains temporary only.

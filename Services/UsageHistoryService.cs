@@ -24,13 +24,19 @@ public sealed class UsageHistoryService : IDisposable
     {
         return _buckets.Values.Where(x=>x.Hour>=since).GroupBy(x=>x.Application,StringComparer.OrdinalIgnoreCase).ToDictionary(g=>g.Key,g=>(g.Sum(x=>x.DownloadKB),g.Sum(x=>x.UploadKB)),StringComparer.OrdinalIgnoreCase);
     }
+    public (double Down,double Up) QueryTotals(DateTime since,DateTime? until=null)
+    {
+        var rows=_buckets.Values.Where(x=>x.Hour>=since && (until is null || x.Hour<until.Value));
+        return(rows.Sum(x=>x.DownloadKB),rows.Sum(x=>x.UploadKB));
+    }
+    public IReadOnlyList<UsageBucket> QueryBuckets(DateTime since)=>_buckets.Values.Where(x=>x.Hour>=since).OrderBy(x=>x.Hour).ToList();
     public void ExportCsv(string path,DateTime since)
     {
         using var w=new StreamWriter(path,false,new System.Text.UTF8Encoding(true));w.WriteLine("Application,DownloadKB,UploadKB,TotalKB");
         foreach(var x in Query(since).OrderByDescending(x=>x.Value.Down+x.Value.Up))w.WriteLine($"\"{x.Key.Replace("\"","\"\"")}\",{x.Value.Down:F2},{x.Value.Up:F2},{x.Value.Down+x.Value.Up:F2}");
     }
     private void Load(){try{if(!File.Exists(_path))return;var items=JsonSerializer.Deserialize<List<UsageBucket>>(File.ReadAllText(_path))??new List<UsageBucket>();foreach(UsageBucket b in items)_buckets[Key(b.Hour,b.Application)]=b;}catch{}}
-    private void Cleanup(){var cutoff=DateTime.Now.AddDays(-90);foreach(var k in _buckets.Where(x=>x.Value.Hour<cutoff).Select(x=>x.Key).ToList())_buckets.Remove(k);}
+    private void Cleanup(){int days=new AppSettingsService().Load().HistoryRetentionDays;days=Math.Clamp(days,30,365);var cutoff=DateTime.Now.AddDays(-days);foreach(var k in _buckets.Where(x=>x.Value.Hour<cutoff).Select(x=>x.Key).ToList())_buckets.Remove(k);}
     private void Save(){try{Cleanup();var tmp=_path+".tmp";File.WriteAllText(tmp,JsonSerializer.Serialize(_buckets.Values.OrderBy(x=>x.Hour)));File.Move(tmp,_path,true);_lastSave=DateTime.Now;}catch{}}
     public void Dispose()=>Save();
 }

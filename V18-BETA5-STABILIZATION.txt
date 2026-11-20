@@ -1,0 +1,9 @@
+V18.0.0-beta5 Stabilization
+- Sanitized diagnostics ZIP export with diagnostics.txt, file-health.txt, and alert-rule-validation.txt.
+- Redacts current Windows username and user-profile path; excludes raw history, alert evidence, credentials, and executable inventories.
+- Validates local JSON files without copying their contents.
+- Hardened Connection End Task blocks PID 0, PID 4, and Siam Network Monitor itself.
+- Detects PID reuse by comparing the current process name before termination.
+- Confirmation shows PID and path and defaults to No.
+- v18 Center remembers last tab, window size/position, connection search, refresh interval, and history period.
+- State stored in %LocalAppData%\SiamNetworkMonitor\v18-ui-settings.json.

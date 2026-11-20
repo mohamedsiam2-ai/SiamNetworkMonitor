@@ -1,0 +1,7 @@
+V18.0.0-beta2
+- Historical usage chart for Today, 7 days, and 30 days.
+- Today aggregates hourly; multi-day periods aggregate daily.
+- Separate download and upload lines.
+- Ten highest-usage applications with download, upload, and total usage.
+- Chart bounded to a maximum of 240 points.
+- Preserves beta1 Data Limits, Connection Inspector, Diagnostics, and the stable v17.5.4 baseline.

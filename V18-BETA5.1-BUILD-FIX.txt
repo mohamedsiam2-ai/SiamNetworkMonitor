@@ -1,0 +1,4 @@
+V18.0.0-beta5.1 build fix
+- Corrected the End Task confirmation string to use escaped newline sequences.
+- Removes the unterminated string literal in V18CenterWindow.xaml.cs.
+- Preserves diagnostics ZIP export, PID reuse protection, protected PID blocking, and v18 Center state persistence.

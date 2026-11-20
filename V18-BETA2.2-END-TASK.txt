@@ -1,0 +1,8 @@
+V18.0.0-beta2.2 End Task
+- Right-click an application usage row and select End task.
+- Available only for rows with a live PID; historical rows show an information message.
+- Requires explicit Yes confirmation and defaults to No.
+- Shows the application, process name, and PID before termination.
+- Terminates the selected process and its child process tree.
+- Waits up to 5 seconds and reports success, already-exited, access-denied, and timeout cases.
+- Existing Open file location, Properties, Copy path, and View bandwidth chart actions remain.

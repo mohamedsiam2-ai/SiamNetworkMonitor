@@ -1,0 +1,12 @@
+V18.0.0-beta1 All-in-One foundation
+Implemented:
+- Data Limit center: allowance GB, billing day 1-28, cycle usage, remaining, percentage, download/upload split, and forecast after two days.
+- Connection Inspector: bounded list of up to 1000 active TCP connections and UDP listeners, manual refresh.
+- Diagnostics Center: version, OS, architecture, working set, thread count, elevation and local data-file health; copy report.
+- New v18 Beta button in dashboard header.
+Planned for beta2:
+- Native TCP/UDP PID mapping and process identity.
+- Application icons with bounded cache.
+- Historical chart window and top-application summaries.
+- Data-limit notification thresholds, disabled by default.
+Stable v17.5.4 meter and ComboBox behavior remain unchanged.

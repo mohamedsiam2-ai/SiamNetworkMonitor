@@ -1,0 +1,8 @@
+V18.0.0-beta3 All-in-One
+- Connection Intelligence via Windows netstat -ano: TCP/UDP PID, process, description, publisher and executable path.
+- Search connection list by app, publisher, endpoint, IP, port or PID.
+- Connection actions: copy remote endpoint, open file location, and confirmed End Task.
+- Data-limit notification preference at 50/75/90/100 percent, disabled by default.
+- GitHub Updates tab opens the official release page; no automatic install and no telemetry.
+- Historical charts, top apps, diagnostics, data limits and application End Task retained.
+- App icon remains embedded at executable level. Stable meter and ComboBox baseline preserved.

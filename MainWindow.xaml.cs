@@ -11,6 +11,7 @@ public partial class MainWindow : Window
     private readonly MainViewModel _vm;
     private readonly TaskbarMeterWindow _meter;
     private bool _reallyExit;
+    private readonly System.Windows.Threading.DispatcherTimer _summaryTimer = new() { Interval = TimeSpan.FromSeconds(10) };
 
     public MainWindow()
     {
@@ -36,6 +37,9 @@ public partial class MainWindow : Window
             if (startup && settings.StartMinimized) Dispatcher.BeginInvoke(Hide);
         };
         Closing += OnClosing;
+        _summaryTimer.Tick += (_, _) => RefreshDashboardSummary();
+        _summaryTimer.Start();
+        Loaded += (_, _) => RefreshDashboardSummary();
     }
 
     private void ShowDashboard() => Dispatcher.Invoke(() => { Show(); WindowState = WindowState.Normal; Activate(); });
@@ -43,7 +47,7 @@ public partial class MainWindow : Window
     private void OnClosing(object? sender, CancelEventArgs e)
     {
         if (!_reallyExit) { e.Cancel = true; Hide(); return; }
-        _meter.Close(); _vm.Dispose();
+        _summaryTimer.Stop(); _meter.Close(); _vm.Dispose();
     }
     private void PeriodButton_Click(object sender, RoutedEventArgs e)
     {
@@ -139,6 +143,43 @@ public partial class MainWindow : Window
     {
         if (SelectedProcess is null) return;
         new ApplicationChartWindow(SelectedProcess) { Owner = this }.Show();
+    }
+
+    private void Tools_Click(object sender, RoutedEventArgs e)
+    {
+        new V18CenterWindow { Owner = this }.Show();
+    }
+
+    private void EndTask_Click(object sender, RoutedEventArgs e)
+    {
+        var row=SelectedProcess;if(row is null)return;
+        if(row.ProcessId is 0 or 4 || row.ProcessId==Environment.ProcessId){System.Windows.MessageBox.Show(this,"This protected or current application process cannot be ended here.","End task blocked",System.Windows.MessageBoxButton.OK,System.Windows.MessageBoxImage.Warning);return;}
+        try
+        {
+            using var process=System.Diagnostics.Process.GetProcessById(row.ProcessId);string currentName=process.ProcessName+".exe";
+            if(!currentName.Equals(row.ProcessName,StringComparison.OrdinalIgnoreCase)){System.Windows.MessageBox.Show(this,"The PID is now owned by another process. Refresh and try again.","PID changed",System.Windows.MessageBoxButton.OK,System.Windows.MessageBoxImage.Warning);return;}
+            string path="";try{path=process.MainModule?.FileName??"";}catch{}
+            string text=$"End process tree for {row.Description}?\nPID: {row.ProcessId}\nPath: {path}\n\nUnsaved work may be lost.";
+            if(System.Windows.MessageBox.Show(this,text,"End task",System.Windows.MessageBoxButton.YesNo,System.Windows.MessageBoxImage.Warning,System.Windows.MessageBoxResult.No)!=System.Windows.MessageBoxResult.Yes)return;
+            process.Kill(true);
+        }
+        catch(Exception ex){System.Windows.MessageBox.Show(this,ex.Message,"End task failed",System.Windows.MessageBoxButton.OK,System.Windows.MessageBoxImage.Error);}
+    }
+
+    private void RefreshDashboardSummary()
+    {
+        try
+        {
+            using var history=new SiamNetworkMonitor.Services.UsageHistoryService();
+            var today=history.Query(DateTime.Today);
+            var top=today.OrderByDescending(x=>x.Value.Down+x.Value.Up).FirstOrDefault();
+            SummaryTopAppText.Text=string.IsNullOrWhiteSpace(top.Key)?"No usage yet":$"{top.Key} • {SiamNetworkMonitor.Services.DisplayFormatter.Data(top.Value.Down+top.Value.Up)}";
+            var limit=new SiamNetworkMonitor.Services.DataLimitService().Load();var cycle=SiamNetworkMonitor.Services.DataLimitService.GetCycle(limit.CycleStartDay);var totals=history.QueryTotals(cycle.Start,cycle.End);double total=totals.Down+totals.Up;
+            SummaryCycleText.Text=limit.Enabled?$"{SiamNetworkMonitor.Services.DisplayFormatter.Data(total)} / {limit.AllowanceGB:0.##} GB":$"{SiamNetworkMonitor.Services.DisplayFormatter.Data(total)} • no limit";
+            SummaryActiveText.Text=_vm.Processes.Count(x=>x.DownloadKBps>0||x.UploadKBps>0).ToString();
+            SummaryAlertsText.Text=$"{_vm.Alerts.Count(x=>x.Status=="Active")} active";
+        }
+        catch{SummaryCycleText.Text="Unavailable";}
     }
 
 }

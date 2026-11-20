@@ -1,0 +1,8 @@
+V18.0.0-beta3.2 Fast v18 Center opening
+Cause of delay: the Loaded handler synchronously ran netstat -ano, process identity/signature reads, diagnostics, and seven-day history aggregation before WPF could display the window.
+Fix:
+- Window now renders immediately.
+- Data-limit summary and diagnostics load synchronously because they are lightweight.
+- Connection Intelligence runs on a background Task and updates the UI when complete.
+- Historical charts are lazy-loaded only when Today, 7 days, or 30 days is clicked.
+- End Task refreshes connections asynchronously.

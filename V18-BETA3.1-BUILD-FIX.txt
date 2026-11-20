@@ -1,0 +1,5 @@
+V18.0.0-beta3.1 build fix
+- Explicitly uses System.Windows.Clipboard.
+- Explicitly uses System.Windows.MessageBox and WPF MessageBox enums.
+- Resolves ambiguity with Windows Forms types.
+- Preserves all beta3 All-in-One functionality.

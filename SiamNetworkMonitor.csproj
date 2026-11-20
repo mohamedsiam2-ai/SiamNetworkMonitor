@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -10,9 +10,9 @@
     <RootNamespace>SiamNetworkMonitor</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\SiamNetworkMonitor.ico</ApplicationIcon>
-    <Version>17.5.4</Version>
-    <AssemblyVersion>17.5.4.0</AssemblyVersion>
-    <FileVersion>17.5.4.0</FileVersion>
+    <Version>18.0.0</Version>
+    <AssemblyVersion>18.0.0.0</AssemblyVersion>
+    <FileVersion>18.0.0.0</FileVersion>
     <ServerGarbageCollection>false</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <TieredCompilation>true</TieredCompilation>
